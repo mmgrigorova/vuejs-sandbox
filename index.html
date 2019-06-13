@@ -45,8 +45,19 @@
         <hr>
 
         <h2>Modifying CSS without classes</h2>
+        <div class="demo" :style="{'background-color': colorModel}"></div>
+        <div class="demo" :style="myStyle"></div>
+        <!-- Array syntax -->
+        <div class="demo" :style="[myStyle, {height: width + 'px'}]"></div>
+        <br>
+        <input type="text" name="" id="" v-model="colorModel">
+        <input type="text" name="" id="" v-model="width">
 
-        <hr/>
+        <hr>
+
+
+
+        <hr />
         <h2>Binding properties and events </h2>
         <h3 v-once>{{title}}</h3>
         <p>{{ sayHello() }} <a v-bind:href="link">Google</a></p>
@@ -82,6 +93,8 @@
             data: {
                 attachRed: false,
                 color: 'green',
+                colorModel: 'gray',
+                width: 100,
                 title: 'Hello World!',
                 link: 'http://google.com',
                 finishedLink: '<a href="http://google.com">Google</a>',
@@ -97,6 +110,12 @@
                     return {
                         red: this.attachRed,
                         blue: !this.attachRed
+                    }
+                },
+                myStyle: function () {
+                    return {
+                        'background-color': this.colorModel,
+                        'width': this.width + 'px'
                     }
                 },
                 output: function () {
