@@ -7,30 +7,111 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="">
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
 </head>
 
 <body>
+    <style>
+        .demo {
+            width: 100px;
+            height: 100px;
+            background-color: gray;
+            display: inline-block;
+            margin: 10px;
+        }
+
+        .red {
+            background-color: red;
+        }
+
+        .green {
+            background-color: green;
+        }
+
+        .blue {
+            background-color: blue;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+
     <div id="app">
-        <h1 v-once>{{title}}</h1>
-        <p>{{ sayHello() }} <a v-bind:href="link">Google</a></p>
+        <h2>Modifying CSS with classes</h2>
+        <div class="demo" @click="attachRed = !attachRed" :class="[color, {red: attachRed}]"></div>
+        <div class="demo" @click="attachRed = !attachRed" :class="divClasses"></div>
+        <div class="demo" :class="color"></div>
+        <br>
+        <input type="text" v-model="color">
+
         <hr>
+
+        <h2>Modifying CSS without classes</h2>
+
+        <hr/>
+        <h2>Binding properties and events </h2>
+        <h3 v-once>{{title}}</h3>
+        <p>{{ sayHello() }} <a v-bind:href="link">Google</a></p>
+        <p>{{ sayHello() }} <a :href="link">Google with shortcut</a></p>
+        <hr>
+        <input type="text" name="" id="" v-model="name" />
+        <p>{{ name }}</p>
         <p v-html="finishedLink"></p>
-        <button v-on:click="increase">Click me</button>
-        <p>{{counter}}</p>
-        <p v-on:mousemove="updateCoordinates">Coordinates: {{ x }}/{{ y }}</p>
+
+        <hr>
+        <h2> Modifying variables</h2>
+        <button v-on:click="counter++">Increase</button>
+        <button @click="counter--">Decrease</button>
+        <button v-on:click="secondCounter++">Increase Second</button>
+        <p>Counter: {{ counter }} | {{ secondCounter }}</p>
+        <p>Result: {{ result() }} | {{ output }}</p>
+        <hr>
+
+        <h2>Events</h2>
+        <button v-on:click="increase()">Click me</button>
+        <button v-on:click="counter++">Click me</button>
+        <p>{{counter * 2 > 10 ? 'Greater than 10' : 'Smaller than 10'}}</p>
+        <p v-on:mousemove="updateCoordinates">
+            Coordinates: {{ x }}/{{ y }}
+            - <span v-on:mousemove.stop="">DEAD SPOT</span>
+        </p>
+        <input type="text" name="" id="" v-on:keyup.enter.space="alertMe">
     </div>
 
     <script>
         new Vue({
             el: '#app',
             data: {
+                attachRed: false,
+                color: 'green',
                 title: 'Hello World!',
                 link: 'http://google.com',
                 finishedLink: '<a href="http://google.com">Google</a>',
                 counter: 0,
+                secondCounter: 0,
                 x: 0,
-                y: 0
+                y: 0,
+                name: 'Max'
+            },
+            // suitable for synchronous tasks
+            computed: {
+                divClasses: function () {
+                    return {
+                        red: this.attachRed,
+                        blue: !this.attachRed
+                    }
+                },
+                output: function () {
+                    console.log('computed')
+                    return this.counter > 5 ? 'Greater than 5' : 'Smaller than 5';
+                }
+            },
+            // suitable for asynchronous tasks:
+            watch: {
+                counter: function (value) {
+                    var vm = this;
+                    setTimeout(function () {
+                        vm.counter = 0;
+                    }, 2000)
+                }
             },
             methods: {
                 sayHello: function () {
@@ -40,9 +121,16 @@
                 increase: function () {
                     this.counter++;
                 },
+                result: function () {
+                    console.log('result')
+                    return this.counter > 5 ? 'Greater than 5' : 'Smaller than 5';
+                },
                 updateCoordinates: function (event) {
                     this.x = event.clientX;
                     this.y = event.clientY;
+                },
+                alertMe: function () {
+                    alert('Alert!')
                 }
             }
         });
