@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Conditionals</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+
+    <div id='app'>
+        <!-- v-if detaches from DOM, better performance -->
+        <p v-if="show">You can see me!
+            <span>Hello!</span>
+        </p>
+        <p v-else>Now you see me!</p>
+        <template v-if='show'>
+            <h1>Heading!</h1>
+            <p>Inside a template</p>
+        </template>
+    
+        <button @click="show = !show">Switch</button>
+        <!-- Display: none  - only hides it-->
+        <p v-show='show'>Do you also see me?</p>
+    </div>
+
+    <script>
+    new Vue({
+        el: '#app',
+        data: {
+            show: true
+        }
+    })
+    </script>
+</body>
+
+</html>
