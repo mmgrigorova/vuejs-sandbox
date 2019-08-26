@@ -5,6 +5,7 @@
         <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
           <h1>File a Complaint</h1>
           <hr>
+          <app-full-name v-model="userData.fullName"></app-full-name>
           <div class="form-group">
             <label for="email">Mail</label>
             <input
@@ -121,7 +122,8 @@
             <h4>Your Data</h4>
           </div>
           <div class="panel-body">
-            <p>Mail: {{ userData.email }}</p>s
+            <p>Name: {{ userData.fullName }}</p>
+            <p>Mail: {{ userData.email }}</p>
             <p>Password: {{ userData.password}}</p>
             <p>Age: {{ userData.age }}</p>
             <p style="white-space: pre">Message: {{message}}</p>
@@ -143,11 +145,13 @@
 
 <script>
     import Switch from "./Switch";
+    import FullName from "./FullName";
 
     export default {
         data() {
             return {
                 userData: {
+                    fullName: '',
                     email: '',
                     password: '',
                     age: 30
@@ -162,7 +166,8 @@
             }
         },
         components: {
-            appSwitch: Switch
+            appSwitch: Switch,
+            appFullName: FullName
         },
         methods: {
             submitted() {
