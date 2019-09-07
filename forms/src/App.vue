@@ -5,13 +5,16 @@
         <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
           <h1>File a Complaint</h1>
           <hr>
+          <app-full-name v-model="userData.fullName"></app-full-name>
           <div class="form-group">
             <label for="email">Mail</label>
             <input
               type="text"
               id="email"
               class="form-control"
-              v-model="userData.email"/>
+              :value="userData.email"
+              @input="userData.email = $event.target.value">
+            <!--            How does v-model work in the background and what we need to setup our own component-->
           </div>
           <div class="form-group">
             <label for="password">Password</label>
@@ -19,7 +22,8 @@
               type="password"
               id="password"
               class="form-control"
-              v-model.lazy="userData.password"/>
+              v-model.lazy="userData.password">
+            <!--            - Lazy is not updating on ech keystroke. For real time validation do not use lazy. Other modifiers - trim, number-->
           </div>
           <div class="form-group">
             <label for="age">Age</label>
@@ -27,8 +31,9 @@
               type="number"
               id="age"
               class="form-control"
-              v-model.number="userData.age"/>
+              v-model="userData.age">
           </div>
+
         </div>
       </div>
       <div class="row">
@@ -49,15 +54,18 @@
               <input
                 type="checkbox"
                 id="sendmail"
-                value="SendMail"> Send Mail
+                value="SendMail"
+                v-model="sendMail"> Send Mail
             </label>
             <label for="sendInfomail">
               <input
                 type="checkbox"
                 id="sendInfomail"
-                value="SendInfoMail"/> Send Infomail
+                value="SendInfoMail"
+                v-model="sendMail"> Send Infomail
             </label>
           </div>
+
         </div>
       </div>
       <div class="row">
@@ -66,13 +74,15 @@
             <input
               type="radio"
               id="male"
-              value="Male"> Male
+              value="Male"
+              v-model="gender"> Male
           </label>
           <label for="female">
             <input
               type="radio"
               id="female"
-              value="Female"> Female
+              value="Female"
+              v-model="gender"> Female
           </label>
         </div>
       </div>
@@ -81,39 +91,51 @@
           <label for="priority">Priority</label>
           <select
             id="priority"
-            class="form-control">
-            <option></option>
+            class="form-control"
+            v-model="selectedPriority">
+            <option v-for="priority in priorities">{{priority}}
+            </option>
           </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+          <app-switch v-model="dataSwitch"></app-switch>
         </div>
       </div>
       <hr>
       <div class="row">
         <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
           <button
-            class="btn btn-primary">Submit!
+            class="btn btn-primary"
+            @click.prevent="submitted()">Submit!
+            <!--            Prevent modifier prevents submission to server-->
           </button>
         </div>
       </div>
     </form>
     <hr>
-    <div class="row">
+    <div class="row" v-if="isSubmitted">
       <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
         <div class="panel panel-default">
           <div class="panel-heading">
             <h4>Your Data</h4>
           </div>
           <div class="panel-body">
+            <p>Name: {{ userData.fullName }}</p>
             <p>Mail: {{ userData.email }}</p>
-            <p>Password: {{ userData.password }}</p>
-            <p>Age: {{userData.age}}</p>
-            <p style="white-space: pre">Message: {{userData.message}} </p>
+            <p>Password: {{ userData.password}}</p>
+            <p>Age: {{ userData.age }}</p>
+            <p style="white-space: pre">Message: {{message}}</p>
             <p><strong>Send Mail?</strong></p>
             <ul>
-              <li></li>
+              <li v-for="item in sendMail">
+                {{item}}
+              </li>
             </ul>
-            <p>Gender:</p>
-            <p>Priority:</p>
-            <p>Switched:</p>
+            <p>Gender: {{ gender }}</p>
+            <p>Priority: {{selectedPriority}}</p>
+            <p>Switched: {{ dataSwitch}}</p>
           </div>
         </div>
       </div>
@@ -122,19 +144,37 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        userData: {
-          email: '',
-          password: '',
-          age: 27,
-        },
-        message: 'A new message'
+    import Switch from "./Switch";
+    import FullName from "./FullName";
 
-      }
+    export default {
+        data() {
+            return {
+                userData: {
+                    fullName: '',
+                    email: '',
+                    password: '',
+                    age: 30
+                },
+                message: 'Default message',
+                sendMail: [],
+                gender: 'Female',
+                priorities: ['High', 'Medium', 'Low'],
+                selectedPriority: 'High',
+                dataSwitch: true,
+                isSubmitted: false
+            }
+        },
+        components: {
+            appSwitch: Switch,
+            appFullName: FullName
+        },
+        methods: {
+            submitted() {
+                this.isSubmitted = true;
+            }
+        }
     }
-  }
 </script>
 
 <style>

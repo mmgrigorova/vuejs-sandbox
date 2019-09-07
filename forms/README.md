@@ -1,6 +1,6 @@
 # forms
 
-> A Vue JS project for excersising forms
+> A Vue.js project
 
 ## Build Setup
 

@@ -1,8 +1,8 @@
 {
   "name": "forms",
-  "description": "A Vue JS project for excersising forms",
+  "description": "A Vue.js project",
   "version": "1.0.0",
-  "author": "Maria Grigorova <mmgrigorova@gmail.com>",
+  "author": "mgrigorova <mmgrigorova@gmail.com>",
   "license": "MIT",
   "private": true,
   "scripts": {
